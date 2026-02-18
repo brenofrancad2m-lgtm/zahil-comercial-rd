@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programa de Treinamento e Governança em CRM - Zahil Vinhos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: #1a1a1a; background: #fafafa; }
+        .nav-wrapper { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.08); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; border-bottom: 1px solid rgba(107,20,40,0.1); }
+        nav { max-width: 1600px; margin: 0 auto; padding: 20px 40px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .logo-section { display: flex; align-items: center; gap: 25px; }
+        .logo-text { font-size: 2em; font-weight: 700; color: #6b1428; font-family: Georgia, serif; letter-spacing: 2px; }
+        .author-tag { font-size: 0.9em; color: #666; padding-left: 25px; border-left: 2px solid #6b1428; font-weight: 500; }
+        .nav-links { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+        .nav-links a { padding: 10px 20px; text-decoration: none; color: #2d2d2d; font-size: 0.9em; border-radius: 8px; transition: all 0.3s; font-weight: 500; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 8px; left: 20px; right: 20px; height: 2px; background: #6b1428; transform: scaleX(0); transition: transform 0.3s; }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-links a:hover, .nav-links a.active { color: #6b1428; }
+        .page-container { margin-top: 160px; min-height: 100vh; }
+        .page { display: none; padding: 60px 40px; }
+        .page.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page-content { max-width: 1600px; margin: 0 auto; }
+        h1 { font-size: 3.5em; color: #1a1a1a; margin-bottom: 20px; font-weight: 700; position: relative; display: inline-block; }
+        h1::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 100px; height: 4px; background: linear-gradient(90deg, #6b1428, #8b1a36); }
+        .page-subtitle { font-size: 1.3em; color: #666; margin-bottom: 50px; font-weight: 400; }
+        h2 { font-size: 2em; color: #1a1a1a; margin: 50px 0 30px 0; font-weight: 700; }
+        h3 { font-size: 1.5em; color: #2d2d2d; margin: 30px 0 20px 0; font-weight: 600; }
+        h4 { font-size: 1.2em; color: #1a1a1a; margin: 20px 0 15px 0; font-weight: 600; }
+        p { margin-bottom: 20px; font-size: 1.05em; line-height: 1.8; color: #2d2d2d; }
+        ul, ol { margin: 20px 0 20px 30px; }
+        li { margin-bottom: 12px; font-size: 1.05em; line-height: 1.7; color: #2d2d2d; }
+        strong { color: #6b1428; font-weight: 600; }
+        .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 35px; margin: 25px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: all 0.3s; }
+        .card:hover { box-shadow: 0 8px 30px rgba(107,20,40,0.1); transform: translateY(-2px); }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin: 40px 0; }
+        .feature-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 40px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #6b1428, #8b1a36); transform: scaleY(0); transition: transform 0.3s; }
+        .feature-card:hover::before { transform: scaleY(1); }
+        .feature-card:hover { box-shadow: 0 12px 40px rgba(107,20,40,0.12); transform: translateY(-4px); border-color: #6b1428; }
+        .feature-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #6b1428, #8b1a36); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .feature-icon svg { width: 32px; height: 32px; fill: white; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 50px 0; }
+        .metric-card { background: #fff; border: 1px solid #e5e5e5; padding: 35px; border-radius: 16px; position: relative; overflow: hidden; transition: all 0.3s; }
+        .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #6b1428, #8b1a36); }
+        .metric-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(107,20,40,0.15); }
+        .metric-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .metric-label { font-size: 0.95em; color: #666; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #f8f8f8, #f0f0f0); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .metric-icon svg { width: 24px; height: 24px; fill: #6b1428; }
+        .metric-number { font-size: 3.5em; font-weight: 700; background: linear-gradient(135deg, #6b1428, #8b1a36); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 10px 0; line-height: 1; }
+        .metric-description { font-size: 0.95em; color: #666; line-height: 1.5; }
+        .metric-progress { margin-top: 15px; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
+        .metric-progress-bar { height: 100%; background: linear-gradient(90deg, #6b1428, #8b1a36); border-radius: 3px; transition: width 1s ease; }
+        .highlight { background: linear-gradient(135deg, #fff8f9, #fff); border-left: 4px solid #6b1428; border-radius: 12px; padding: 35px; margin: 40px 0; box-shadow: 0 4px 15px rgba(107,20,40,0.08); }
+        .timeline { position: relative; padding: 40px 0; }
+        .timeline::before { content: ''; position: absolute; left: 30px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, #6b1428, #8b1a36); }
+        .timeline-item { position: relative; padding-left: 80px; margin-bottom: 40px; }
+        .timeline-icon { position: absolute; left: 10px; top: 0; width: 40px; height: 40px; background: #fff; border: 3px solid #6b1428; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .timeline-icon svg { width: 20px; height: 20px; fill: #6b1428; }
+        .timeline-content { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 25px; }
+        .timeline-title { font-size: 1.2em; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; }
+        .table-container { overflow-x: auto; margin: 40px 0; border-radius: 16px; border: 1px solid #e5e5e5; background: #fff; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: linear-gradient(135deg, #6b1428, #8b1a36); color: #fff; padding: 20px; text-align: left; font-weight: 600; font-size: 0.95em; }
+        td { padding: 20px; border-bottom: 1px solid #f0f0f0; font-size: 0.95em; }
+        tr:hover { background: #fafafa; }
+        tr:last-child td { border-bottom: none; }
+        .chart-container { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 40px; margin: 40px 0; }
+        .bar-chart { display: flex; flex-direction: column; gap: 20px; }
+        .bar-item { display: flex; align-items: center; gap: 20px; }
+        .bar-label { min-width: 200px; font-size: 0.95em; font-weight: 500; }
+        .bar-track { flex: 1; height: 40px; background: #f8f8f8; border-radius: 8px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #6b1428, #8b1a36); display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; color: white; font-weight: 600; transition: width 1.5s ease; }
+        footer { background: linear-gradient(135deg, #1a1a1a, #2d2d2d); color: #fff; text-align: center; padding: 40px; margin-top: 80px; }
+        footer p { color: #ccc; }
+        @media (max-width: 968px) { nav { flex-direction: column; gap: 20px; } h1 { font-size: 2.5em; } .card-grid, .metrics-grid { grid-template-columns: 1fr; } }
+        /* Cards clicáveis */
+        .clickable-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .clickable-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(107,20,40,0.15);
+            border-color: #6b1428;
+        }
+        .card-link {
+            display: block;
+            margin-top: 12px;
+            color: #6b1428;
+            font-size: 0.85em;
+            font-weight: 600;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+        .clickable-card:hover .card-link {
+            opacity: 1;
+        }
+        /* Sub-abas de módulos */
+        .module-tab {
+            padding: 10px 22px;
+            border: 2px solid #d4b896;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: #6b1428;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .module-tab:hover {
+            background: rgba(107,20,40,0.08);
+            border-color: #6b1428;
+        }
+        .module-tab.active {
+            background: #6b1428;
+            color: #fff;
+            border-color: #6b1428;
+        }
+        .module-panel {
+            display: none;
+        }
+        .module-panel.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav>
+            <div class="logo-section">
+                <div class="logo-text" style="line-height:1;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAS0AAABwCAYAAABLhCZzAAAmEElEQVR4nO2de5hkZX3nf+/9PaequmoGuQzQoMmuuMwwYDRRZ0BJ1qxCQIiuKzKIGo1ABqNG44iaNTdR1kf3ojMDUeOjDhKTJ3kkCGie1UVR1MQoN3WNGwNyE3WYrtu5vNf9o6p6enq661R3V9U53ZzP88x0V9db53zr1Hm/9V5/P4CSkpJ1yw3P+dWz8tYwbXDeAkpKSlYPi/25e7f9SiNvHdOkNK2SknUMsubuGQQX562jpKSkZGQOzJ52d94apknZ0iopWedQxuduOu2ss/LWMS1K0yopWec47O8GbV6Tt45pUZpWSck6xyhzt2m1duWtY1qUplVSss4xSt2NnK/ecPxTL8pbyzQoTaukZJ3zOz/98d2YUiYZ/+28tUyD0rRKSjYAlpD7OcLn5q1jGpSmVVKyAdDO/tgnyYl/ecJTz8xby6QpTaukZAPgwH8XIYw5Ir+et5ZJU5pWSckGADl7CBFMQJkL8tYyaWjeAkpKStaO0fpu61DqkuTZeWuZNGVLq6RkI2C09dZazBj7eOUpW/OWM0lK0yop2QAYY+53xhrMGGOUbujB+NK0Sko2ALuTZttb6zClzIM/I289k6Q0rZKSDQb2+Ky8NUyS0rRKSjYK3rveTzg1ZyUTpTStkpKNgvcAAGDT9LiclUyU0rRKSjYKvudamBJyff34et5yJkVpWiUlGwwihJBcbM9bx6QoTaukZKOAUO8HxphQtmHr9oZ9YyUlT0LQ/E+EhhZcz5SmVVKy0UBoMLy1ISlNq6RkA7Cf1n+NCCF6jxDyG9i1StMqKdkAEEoIYNwf1ELIerdhTauM8lBSsgFAADuJEBIAALxz2pi5fBVNjtK0Sko2Agg1EEYYAMCmKr2i/dh9eUuaFGX3sKRkA0AQOWvwu0fQzlHKxClNq6RkA0C83zn4HXP+gzy1TJrStEpK1jn7g83PoWEQDB5b5L6bp55JU5pWSck6RzJ2MeFczP+BkHtzlDNxStMqKVnnMMJeOvjdGWOUd1/JU8+kKWcPS0rWMfuCxmkIofn4Wcbof/7dQ4/8JE9Nk6ZsaZWUrGMkE685vBIeQDN8IE8906BsaZWUrFP2zxxbY4BfPXhs4iTugP5cjpKmQmlaJSXrFIHIbhZWtgweKzA3v2nu8Yfz1DQNyu5hSck65PpKI2Qe/f7gsXfOas725alpWpQtrZKSdYhE9I2scriVlWj1pSueePjOPDVNi7KlVVKyzvhE47jTsUPvGDz2zrkmcn+Wp6ZpUra0SkrWGZLKT6GANwaP22n812+ee+xrOUqaKqVplZSsIw5s2nIDYvxZg8dJu/3wQWSuzFPTtCm7hyUl64QDT9lyKQLyqsFjb62dw+6Ka9oHm3nqmjalaZWUrANuPGbLpT52+4mU8xujOyr52JtbP78tT115sHFTdpSUbBBuOu7kXSbS+1itNjP4m0rTf7r8iYd+LU9deVG2tEpKCsxfHTf7bqfhowsNy2j17cdU5zfz1JUnZUurpKSA3HT8SQ1w5OOA6cUI4/nGhep0HjkI+kVvaR/8Xp768qRsaeWEoGJH3hpKislnjj3pMqfQDxHlL11sWL8wyZPasADKJQ+5wCh7G6L+7ciQZ3mwD+Wtp2RtfPCpv/RuSWhHd+K/ffPjD6368zxw3MnnEIffA4iciyUhC5/T3e6jB03yoj+I557UhgUwpHvIGHsDpfi9hFCCMJpn/kWDBwDgAQC899bjr2GMMcYLy6J+km7UfzB40SCdZO/HIGHbkSp6ZTw4D77/Eu/9vIAF50doIKmXXhdjhFSq/me73S7U7ApGeGtYkXcSQnAcqw8rlf5R3poAAGq1yhOUUuq89wgOfzxoic+59xN8/y/9QoMbBCEA793gw3LeAXhwzrlUufcZnX5wLTqr1drnKUXn+HmBPUlHaISFDxbeX/N34hF4D33V3iOEcZImkUr1iaNq+q9bTqzPIvGJqsMXIYwfAm+/643+cqrUd17TfPzrw177ieNnT2KYvAxbeBN4dAqm5KiGhI6jb/0sbr/orWl76NKG45B86yGi/4D0joEQwvNVtVcnMT7izXvwvn/F5hMmDp5f8OuCz3K+1loHd6ZJ/NvZV2f8LGtatVr1zkajfvaoB9LaaGOM6b2r3k2EMXnEe/TgYr8DgAU3/9GZcOef6T0C77zv+ZHbTik9hnPOs/R0Ot1Hk1Q/N466hWnJUEzqMpT31Oszs8451+50f9Bpd7bnrQsAIKgEOwmipyIMZ1OCX0AofZoUQi64d1dMHMdRqtR3tLa3OA/3OefvMypZUxSCsFI7AyNU9+BPQQjOIBguFEL8shjk/FsFaZomaZqmxrpbAPDt4ODBbtQeajZL8bFjT/5olcrXDx7bNE28tRYL/jOE0QPgvQcKXwEPdW/hLJuo0xHGdbpgGcNR2qLuF5o6uuT3o2bmWqzjIKwkCLZbAts98Tsdci+WUogwDCuEHNlyWwnWWtvtdrvW+Xut818FwPcjj+6NolYurb4lb0hG0GxYrdw3M1OvZx2g2+12lFbaO38rYHSXB7gvakdj31Jw/Jbjt6ok+WK1Wj0pq2wcx1G7E/3nNEluH7eO1SK5qHPJb61UwudQSikAQKvdbnU60SusMV/IW99iuGA7KCF7q9XqM1ZqCMYY3e60/jpVep9OzV2T0jggCMQVjLF31uv1U1b62lar1Uy1utZad4NO9ZoXaX5s5in7qpXGVWs9jjPGRHHnA6/v/OKdqz0GAqgRTN+ACLyhUqlsqdWqtZUeQymloqj7N0qba9JEFaIBsKRpVSpyT6VS/eNhN2ucxHGapj9X1uzVRt/gUjexVbmVkNWFDG/nXDybMcaGlbXW2mazdV23G71rUnpWSkWGpzDJbgoC+auU0nn9SinVbnc+GkXx1XnqWw7GUF2K8JaZ+sxOvGBAeBjOOddqt25ot7q/N2l9CwkCtlPK8PZqdfSK2e60H0lT9eI4Su4fp5aPVTbvrc5sXvX7d9YeitLu7tc3f3bTmCTNSBncvGnTzNmDL8xRSNM0iZP4f7Rb3WvGpGMsLGla9Xr1vpmZ+ralnvPe+2ar2Uy03quN+QDoyZnVgE2N2nUyCN+ysMIvx1yz9bVuFF/gjCnE1oZKEOzkkn92uRbioUNzh7qd6GkefCH0LoYyXA9k+ECjUW+MUr7Vat3UbLYvnbCsJalUgj3VavVPRxk+0FrrTqd7cafTnciY5ydrx39dVGsrniE2Sn07AfO61x98dKwZdTDG9TAM7tm0qXFqdmmANE3TTrf72qgbj8s4x8ZR356c020YkyXfWJqmycEnDt3TjpPzdazePQ3DqobB+QDoKkKOHqBcTDeKHksSdVURDKsWhrP1mdqN1Znql4d1aTljjHF23jS1rQSjXROQv0kbo7PKJkmSKG3fkVVuUnS78XVRFP90tLLRY5MyLACAlmpf4r2bW8lrrNb/rLD/zXEbFgCAc67pPdqvtc78HL33LkmSvyyiYQEsYVpCyl1SyqO6hUmSxM1255txnJwL2n5jGuKqkp8CGO0LwjDMGhBO0zSJ4+RPtUrH2tRfLd77bUKKl2Z961eqlWoQyEJ2DwdY6+5M0zTNKmeM+XEcRblmgiGYZA4OW+cswWSis8pvTKOHOlFr5PEok6Y/txS97nd+/tDcpDRZa25VSqusclEUxUa7WyalY60cZVqUkJcs7oalSZq0O9G30kRdDH563RgqxPXVavXErJkPrbWO4+Tv4ii+flrasujE8e1KqR+PVNj7bYzz2QlLWjXGmAedtTarHMYk9/jkzrmvaj28YhqtNXiYuLn+busX+02a/iirnPfeI0HfdvlPH7hnknqSJLlfa5VpWkqpVBs78QmU1XKEaQlOt2KMj+gapmmatLvdbyVpejH4yXcHB1Qrcg+h9PlZA+8AAJ1O9wdxkk514DcLwdmM977mnMus7FxwzigtbEwkleq7tDYmq1wR9oR577xz7qhlNItAfkpfvolL/jirjDPmy7se+7dPTUEOgIfMGUDnnNM6zX2IZTmONC0hLltoEkqptN2JvhWn+iJw0zOsULAdgPDbwzCsZJVttdstZfRVRq99unqcEEIuxRg3kjhJbEYrRUoZUEpeMi1tq8H7TCMoBKOsK+svlJxK6vjXz/38MzqOfzi0EEHTMSwAIIQ8klXGL7F2skgcYVoY4wsZYxygt3Sg043/MUnVRWCnN7AdMFpHlO6rVCrVrLJRFHWVUu9ViSpcU5Zxutt7D0qpzyVJkmSVJwSfKgQv7IA8wjjbDKYhJAu/4P9lQL1NE1ORAwCQmPTvlnvOxEkcp+rmaWk5ej/A+mPetDjnW72HkwF6zcNDc3MPJona5adoWAAAVIq9YRg+PWsAO03TJEnU/4mj5L9NS9uoSM5ejDE51Rp3j3Fud5IkcdZrBOeCM3bhNPSthqxb3VpnrbFfmYqYIXjw9zrnXEaxqdZc7f2ty7VejDV3vH7u0enVsfXvWUeY1m7KKDXWmrlmc05p+xJrprsCthKIKwkhF8oh2xoGtNvtR5NUFWocawAT4mqEEFIq3RtHcRMj/AVjho8JMc65B7iEUpq5CyEfhne7BhvTpqVmeR2+OYKMqQr9ve7Br7tlloxYgqed9muU7nNrGkJWy4LuoTsfIYS73W5XG7fbaj3VfUUBZ1sRIXtG6RY2m805Y+1ua3QhthUsRHAxizE62xjzhHP2dgAA5+xNWTNaAACMUUoIKWQXMWukqL9ZfTpihumAhVvpC8QyTuoRLtw9TCn/v3lrGAYGAJBSnOe9r2mtlU71p1WS/NU0RUhK6oSz/WEYnpC1XSRJktgYs0+r4u3XAwAgjFyFMcbWuAPa9CYvoji9TSv146yWSLVarUkhirpma4QxrdwbWgVQsCxLXr9Uq3+btpAsCmn6C8AAAJSSCwghRKX6u3GSvHHaIqhge4QQv5K1Mbe32zz6R6Vt4caxAAAE43XG6KustVal+og1Y976G7O6iAAAgPw2Xsg1WyPcyEVwDA/ZOnLRefT1c9polaYPTFlIET6lNYEBABBGFxhjnlBaXz5tAVKw8xAmV460vKHVetgYe3XRljcMIIycTwnZ5D26S9sju65KmxvTNM2cRZRSSs7ZmqMEPKnJ8NdcWoRLTNs5a8xbdDNzCcI4GW0wr9i+hinD/8kaGxqj32/tdKNoCkpnESYfqdezN+N2Op22MfZ9SqlCbNNZCiHFGxFCyBq3d/FziUof8s5/PquLyDkXlNKLJqdydYzUYyh2ryJXitPlKrYhjQLGGN9vnH+3UvYvpn1yEcjra7XqiVkLAuM4jlSqbk6S9IZpaVspQSh3YIS2W2sfiOKlN+JqbQ6MsocPY3SKDOTO8aucNAWomKNJ8AVQmgt+hGZm/nPAw8EqNY+qHMygUgn3UEZfkDWO5Zxz3W70L0miijpADQAAlJHLMMY4TfSHlyvTjaLbVKr+X9axhBCSM7prvAony1oinI6XkWTkobUg12f9k0s2nlDwnRijPZVKJXMcq9lszmltdltnCzmOBQAQBnKWILIrTVWapmpoOA/n/I1KDd+0SimlGOMLpRQFXbO13nny+kcRZnjXytRNK+C0jinZO/I4ljbvN2byIXvXAqFkF2OMO+c/Y93wHQRJom4cZYU85/wpBJPzx6dyzWTW9AJtERkqpChtwlwYzbMK7WxTNy3K2V4h5b/P6k4kSZKkqbojSdUHpqVttTDGLnfOWaPt/qyy2qiHvEeZSROEEJJxPvXZ3OUYqfe3fswAPVmdyxfckEZhqqZVCfiVhNALwzAMh5Vzzrl2u/2IUmb3tLStliCUr0QInWKtuydJ45FmNpUyB+I4jrLKIeR3ciELuGar8GRUzCenYfUYxbOK7WtTM61AsK2AyZ5qrZaZeKDZbM5Z5682BdymsxhG6WUAAGmiPzLqa5IkuilJ0p9lleOcC0pwLvHWV0MhrGCEqa/CNLLy8IYRzllsy5qSaYWc1ikX19dqtZOyuoXdKOpa6/ZrpQu5TWchgeBbEUI7tdYH4yRaUTxtb/1nTEbcdc45H5hi3owyO1iECUQ//99QCqC0ZLVMxbQo5++QUjwrKwqpUiqNo+TbWtvCj2MBAFBOdzPGuDX+xpW+VhlzfRzHmQPyhOKnCiG2rk7hdCnCsodR9m0XQGbJGpi4aYWBOA9TunuUcDPdbvcxa8zVxhRzm85CpBB1QuguY4zW2mQOwC9G69EG5MMwrAjBC71GDWAQDTQzsvTEcc5CVqRYAFg/fdmSo5ioaQWMziKM99VGGMdqtVpNre01SuvCbtNZCKL4SowxcdZ/Tel0VWNv1rgDWSmdEEIIY3TB6lROD+ecs85nBd+bONY5512mGRTDsvIWsByFFdZj5Gyzq4FJsT8IwxOzyiVJEhtt/j5N06mGxFkLjNLdAOCNtgdWewxt9K1JjB5njJ08rByldLOQwSvTpJh56AAAGGOMS/vaGVx//qD71d9m2d9u2dtAsnR9WPzXBSu+jv5lUWgqNPgfgXfeg5+hbPQsyk82Cu5HIzGxDzcMxNspYy/ICpvsvfftdvsHRruph8RZLUKKSxCCutb6YLTCAfiFpGnSlILd4py7YlgcsSAIQqX0BWkChTUtAACM0CkY+ROsNdY7762zzvdDmvaLLNfC8Yt/G7Jyu/cU6i22Qgih3iBV70yYYAxejOcNTZgCLcZdV0zEtCRnOwil7xglCunc3Nwh5/yrzZRj0a8FKcUbBec87qafWeuxlDZ70zR9dRAEQ9eu9ZKOiFm9yq7opHHOuTiJ/6Td6r4/Tx1BpbLTWDPRRKxjZOqutRFscuxjWoKxOqF0X6PR2JRVttvtdqx11ym1PsaxAAAE58/DCG03xhhwsObksHEcf09rkxm9UkohGCW/tdbzrZasUaIizBwCADijfVZyXwDYGP2kCVH0/YljNy0uxb5KtXJaVjmllEpTfUccFy+bzjAYp5dxzrmz7pZ23B5PlmIP+7LWbDHGuJAix2092TNdGNPcjQshgtbNMqz1obJwjNW0qmFwJefsoqxwMwAAzWbroTRJC7FwclQEJScRQnYZY7TVZtUD8ItJk+RTnU6nk13SbaOMnz6u844T773zLv+vaO+c99kpxPIXWrJqxjamFUqxjTD6zlHCJjebzTln7dXraRwLAABTuotSygCgSYRsNzg/hxKMnOvNi6HBPtze8DAsmjvr4Xt/sc4DAg/WGjDOOAT4e9ba5w3r2vRWyKtdRsO7Jv9uV0b/XeYtAzBCo6wezV9oj0K2tQopagFjMa2A0TphdH+1Wj0pq2wURZHRZp/SxcymMwzG2W6MMfLe1xlF/yBEKLz3vr+Y0ffmshDu/0QACzzr8PS/t9Y5bI1xDjyhDEB5hQlm1lqTYVqCELwLoHimVZAhLSAYIZKR0Skflro+xbhmR1NUXT3GYlpUsGullM/KSv9ljNHdbvSPSZIWrtJlwTm7BCFU72fauYMQgq2xGACh/vKj/uw79P87vJ5o4Fj9+fneAT3y3jlnnXXII2+U9gD+mZzzoWu2GKObOecvVkoVzfSLkfcQY0AYjWBaU25srSfPKjhrNq1QsPMwobtG2abTbDYf1soWfkvKUkgp3sU5F91O92NRPJk0azO4dq0x5g8pXX5xZLVarVnrXlU000IIoSLsSumt2hruBgVIhF2yBtbUjA4YnQVC9s7MzGSGBW62mk2t7TXWmalmrh4HUvIdCKFZpVRqjFvz2qzlMEbtHyXOFsboAsb5VEMxZ9Vzn5VmqOQoCtE0XYpiqppnTaZFOD9Qq9Uyt+lEUdTVyvy91vqzazlfXnDOdxNKqDb2AaXVNyZ1nihJHzLa3pOV1FUIISglr5yUjqVZP5Y0in3m4LBLWEEO7lBwQxqFVZtWJQz2CCmexTkfumfCOWc7ne4PkzjNbZtOJRDnB2J1LZMgkKcQQl5CMMHg0JoXk2bi/H6t9dDEF5xzIUWea7aWZP24WslQiu5rqzKtkNMdCKM9oyxvOHTo0JzW9nIPPpflDZSQHYDxpzzAeat5PSbkSkop1Vpra+3E9/4po25LkiQzEzVCcIacapytjTNO9KTe8zfSx1SQqeBlWLFpSUrqnpBPz8zMZIab6Xa7HWfcdc7Z3MaxRCDfjzHG2tjM2FWLCQSvU4IvQwghq+2BVCUTN16lTRNj8oWsISIhhGSMFWxx7joxrt5ilOmfcqQ/Tph1nCl8U6N+wbFP2Xz1ik2LSr63UqlsIYQMnXnUWus0UXckKr9sOpzRPyQYnWGNu9dau+KNxoTSSymlm9N0sgPwi9HaHMhqbVFKKSZ4aqY1QrDlQrRgRtw3N32hBVnI5r3fllWmEEKXgHHxHimDF67ItMJAXEEpuzAIguzlDa3WQ3GO23Q4Y6fLQL4TY0K0sasyHCnF7wshpHPuwTiNV9xSWy1xHN+epurnWeUoJZsCKVfV7R0/hWllFUZIEcEYjTC2WzzbCoNgmxDs2QDk7pFNSzC2DWN8ba1Wm8kq2263W0bb3S6nrNCS07oM5F8EQRA6Z6219vaVHqNSCV+JMD7VOee8QysOp7xWEKBbs8IGh2FYYXxaXcSslkJBbnSf3ajJJyJFMa7POhp6PALO2W4AgDRNvjOSaUnO6yKQ19cbjUyXVkqlSumPaJ1fNh3G+bVSimcZY4336H7nVt415JxfTillaZImxpipdQ0HaG1vyZpFBAAgBF8ouJj4mq1My0LF6B/262RGhuk8hC7pFoWMp5XL5RmC5GxWSPE7AABpEo/W0hKSvy8I5K9ijDPjFEVR8k9RFOe2TScI+CWM88s558I5a80qojFUQrkTY3SOc84ZbT+dpPHUW4xxEt1ujH0gq5yUMmCMTTQ3ohBkB2fDI9CuM4qSYTqH1WLrL1U4E/IazjlPkiRptts/yTStShCezzh/dVbYZACAbrf7qE71VeORunIkpzuEkDcMIqY6571W+msrPQ6l7DJKKdNaq2kOwC/GGXdz1iwipZRKKd40SR2UMITJ8H2laJTcXVPAA9Szun+9LUfTUnT4pIv/lMcmgpE+ofw/xnkEZ7OVSvA6AABr/VcAMpY8BJzPEob3Z4UCBgDQWqs4Um9LVJJLFFLJ+VYm5E2DMTeEEHLePWhWuG0okHwWE7wLY4yNsQ/EaTS1AfjFKK0OJEmauWYLE3RqEIQ7JyakV98KdCsvD8Z4OyEkuwdRgHczStyvsTNaO2v75IWMhpTBdYwxDgDgrLsbIMO0mBQ31Wq1oVEHAHqr3rvt7t+sNMvyuAiE2MaluL1en5kd/E1rraxxt6z0WISyd0gppDFGW+P2jlfpyoiT5HtaqX/NKieEkJzzyXXJB7kjhhYpRn+rXyszW1oIoTOmo6eHt/aorVmYUvohXv8P09LAKT992Gb8AaPNME6eQMpLqrXKKwB69dl7/xOAIaZVCeUeKUVmuBkAgFar/f0kUbvHJ3d0AiG3cslvq9dnZhdWHK21TlO9oq6dZHSWc3Y5IZQaY4wx9tbxK14hzt+ZlRsRAIBS9Hwpgx2TkIAQyuxyFWW/9HyMoCH0TWtqFfPDorEDLbGuEVPKQimfOS0dhNIGxiPEzy8AgvGtYSX40MB/XC+x5r0Ay5iW4GwH4/ydo4RN7nQ67SRRl2o7/azQgRQ7RMC/MDNzuIU1wFr3oLV6RV1DJsQ7pJSBtdY66+9NVZJ75htj7C2jZEzuDcjTiSx/wAhvz/ry6ocKK8A3dDHMcyEh569aykgRQkggMrU9pAjhU/EIscby/gLihM8GleCLYRhuWajHGHMfwBKmxTCpM8ZuHGU9VpIkSRynf661mvo4ViDFFWEl/Ieluq/OOadS/bmVHE9wvoNxdjkhhCillTXuq2MTuwaMNXcplb30AWOMMYZLKeNHGfgYqI9yHxOMz5zAuVeEh+xWoXPOZSehHg/7gvp5ksvXLve8EOI/3lA//vemoYVQfM4oE2oIISS4zOULiBN+elCVd9Vqh6Mg9wMCPxz3Z/GPMi0eir3VWnbYZO+9TxL1pSSZbjadMJCnVKvhgXqj/r+W27DdXyu2oq5dWK188HCeRu+dd/etXe3aSbVuIoCRvhSEEFJwtm/cGhBCZ46SlgshaIz73CuFYHxWVpmewaOJDzbvC+tbG9VNB8iQSCiYEFol/IMf3XzCrknrIQS/YLRyhGCMprgZv4cU8rxao/qlmZmjGyJK6/mx3SNMS3J2heD8IsYYyzpBq9V+WCVq4hd6QCB4vVqp7JGB/Eaj0bh0MKOwFGmqfmGsvmvUY4dhsCeQ4tmH/4IQgC9AV6cHQhiN0mQXQggp+W8IKf58XOdmlMx67543Slnn7Ol8Mi29kSEYTh2lnAe3U2Aysc/449Vj9jSqm+/GlG7OKkuEkCHiH//E5i3XffwpWyaiiRP2CkrwU0cpizHGCMHUJiq4lLO1mZkbjz3umNvCMDhhqTJG2zvm9Q1+oZicTjm7dpTlDZ1Op62T5IpUpxMfxwpDOVutVvYElfD79cbMtZVK5cSs5r+1duRZQxkGr6zVqn+ycAN4EMiAC/6qtegeF2EYbCUUnznq7FwYhuFMrfrWIJRXrvXcnNG6CIIbR8kUDtALBS1DeROjNBfDD6rhlVLKp49UNgiOp5K9d9waPjmz+dIbj5n9UaW26f04I6jAQgjnIhCVt4dYfvfAMVsu+0S1kRlFZVQkYVtlRX4gCLPrNkA/ggin7xKcZ26uXguiEmyt1Kp7GzPVf2nUa0MXSDvfG4QHmJ8fxjNc8purleDXwjAc+sbiOI7arc6HUqX+aDzSj4Zx8TxKyXbG2EWc0XOlFHLUShvHcTTX7L7M6HToNiKMaZ0LfkV9pvJnS/XzkyRN4jj5UpomV2ltchmQr1Zq27jkH6uE8jkrfW2apmkcqy8plVyZpmrF+hkPLhGCXFOthM8Y1qpdjDHWtDvdbyZJfKmZ0nWTQfUUxvH7q2Hw8lGm9Ad0Ot2OStJPeqPfFenVp7P77DHHbncWLvWIvxbL4LjVHmchXqlfgE7/lmD/+f8y97PPr+YYAlgdKHmDCOk76/V6Y6Wv73Q6bWvcAe/R15yzt3aj7poaKVTKGqX0bILx8wWjF3NGf3lYr85a6wgh2FprDz3RPitOuvcD9E0rDIOPVKqV1wnORZY5JEmadNvd93hr/eGyCBBGCCMMGM9n0ervYepnpumlBvS+l/ivF1O892jWeZj14ME5exJl9GlCCM455/0cgyvi0KG5Bzud7lOXe16QYBui+PwgZG+qVitDQ0Vb62wURT/1xn3FGvt5Z+HrkY7Gk1V6CI3a5gsAwzlhhb91pBTvQ4i60WPOuE9hj2/1xN/3xNzc3HJl67X6OQ7Bb2EMF4SBPG0lBrCYTqfb8dbdYpQ5YJ37ejzmWGSVsHo2Jng7IeTCIOAvXK3WJElipdRBjvBtIWG31gW/995HH31gufIff9rsmQxII6TBrztlz1Lt6HkY002YrfxeHQXvvbdpmiDGvmmxvyP19u7IqAfedPDxexeXfWZlptFC6IwO+HNS77Ya5F5cqVQqWdGFszDGGmO0Bo/uA+8f9N7fgwCa3vl7BoMW3ntw3gMgmEEIndmv4YAx3u7BNxBC2/uZpDI9ZjGtVrvVbLbmW+8oDOXpSun/jTHClFIyYFCg7y3gvfMA4I0x1nvwCPUmlw+nx+ofcLAKZpC0dMHJeyYFA8cC7713zjvnXe9X5/280SFAGBM8kNTfJtI/4OFUqINj9xMLO2PsjUqpJbe1YIweFEIEvj93hDHGhBJCcM9qAVAvr1dfUH+pAcL9TIYYYxxFcZcCfXli0rHHip+pVg5ggi8AhJB3vSs0OO/CcgvGtw5fEIQG13M+x4Rz1mLUG6HAhJAoijoBC152qN08YryvXg3PtgCf45wLY6ztXQLf/1Jaeixt8Sfc/xLyGGM8+H0+Qw9CKE3VvyilV9xiXEwQyB8FgTyhf/+4wacFg7tjwT13+Dp5WGq9qffeO+scQoAIIYRSShljNGq1WudsOeaFt/740XsBAN637ZTGCY+k93EijkMYY2eswb06grxzzltrvPMOnHOAAPVO2rt0h7+qD9+r/e4NGsyLDSrP4Sp0WCAAQghjBAhh3zs+YIyJRwAqTqL7hD7nvx+a+94xgv3ICXEsAIDz3htjrbXWAO6dwHnnwHtAvXt9cL758w9qLYKe/sNXcT4j3sKafUTVHnzei9/nEck+FxRB8+8c44W1evHxetXUe+/h61EUX3TE9Tv5+C3PRcQT13tLgBEeiJ5/le9ZKQB4T/q1eP5+Rr3Mvhj3WloYY8D9z6L3lj0M0iw776F3/by3zoE11htrvbPWO++9A/AeEPIIEEJ40IQbJBQ8ItwAGtwTDrx1zlvtLGXkJ4//7Kc/PeoOBYCTjz/xuWEgqQWHjDXOOrfgvpm/U/q3GTjoVTxglCHGGMGIUBXHihBy7w//7V9HSGO/Mp7xtH93ZhjKBuUUGWdBKeWUNmCd6XnYglSK8+kT+488eAS+d00wACCEPMHYU0oRpZQghIlRWgvB7v7u977fXXjebc94Rh0cbA9CSax3oLX22hjvnQOPABAefLZkkJB28M0Dzjnvez4H3jkAD9BrcWMgBGOECfbWoU63Yx94+JE713qNfmn21Oc3Gg1MGAHnLSilvdbaaaPBWAv9pQwD3/AI0MJ7sXd3+d5dhAGAIIw4oagiBa6FIcxIAdI5OFaSb3/oS3fOf8a3X3zBWccdc0IjaGwGGyeQ/OIgpAefANVsQRonkMQpJFqBtsYbD94CQg5h8JggIAQQIYAwAYTRvI5ePXDgrQOwFpA1gK31xDtgGAEnBEnBQQQBsEACrlWBhCGQMACDETzePAgv/+IX7gAAuOTpp52LZ2qQUgaRs9BNU0i0Bu0cOO+9RwBAcG9SB/WMrffd5Jz3Dvotk/5V6xkDgt71A9TzBEIwJpQgTAgG3C8BPVvwh+t13zV6d6tzbv6f7f0D65y33iHXM7n54vM3tAfwzjsP3hOPPKW4/dAjj3x/UOT/A1ysfib0DM63AAAAAElFTkSuQmCC" alt="Zahil Vinhos" style="height: 55px; width: auto;"></div>
+                <span class="author-tag">Breno Souto - CRM</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('visao')" class="active">Visão Geral</a>
+                <a href="#" onclick="showPage('publico')">Público-Alvo</a>
+                <a href="#" onclick="showPage('resultados')">Resultados</a>
+                <a href="#" onclick="showPage('governanca')">Governança</a>
+                <a href="#" onclick="showPage('modulos')">Módulos</a>
+                <a href="#" onclick="showPage('metodologia')">Metodologia</a>
+                <a href="#" onclick="showPage('proximos')">Próximos Passos</a>
+                <a href="#" onclick="showPage('pos-treinamento')">Pós-Treinamento</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="page-container">
+        <!-- VISÃO GERAL -->
+        <div id="visao" class="page active">
+            <div class="page-content">
+                <h1>Programa de Treinamento e Governança em CRM</h1>
+                <p class="page-subtitle">Capacitação estratégica e estrutura de governança para maximizar o potencial do nosso CRM</p>
+                
+                <div class="highlight">
+                    <h3>Contexto e Importância</h3>
+                    <ul>
+                        <li>A implementação de um CRM é apenas o primeiro passo na transformação digital</li>
+                        <li>O verdadeiro diferencial está em <strong>pessoas capacitadas</strong> e <strong>processos bem governados</strong></li>
+                        <li>Estudos do setor mostram que até 70% das implementações falham por falta de adoção e governança</li>
+                        <li>O programa foca em capacitação prática + acompanhamento contínuo</li>
+                    </ul>
+                </div>
+                
+                <h2>Objetivo do Programa</h2>
+                <ul>
+                    <li>Garantir que a Zahil Vinhos <strong>crie uma cultura de dados orientada a resultados</strong></li>
+                    <li>Capacitar cada membro do time comercial para compreender, utilizar e confiar no CRM</li>
+                    <li>Posicionar o CRM como ferramenta estratégica de crescimento</li>
+                </ul>
+                
+                <h2>Nossa Abordagem</h2>
+                <div class="card-grid">
+                    <div class="feature-card clickable-card" onclick="navigateTo('modulos')">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+                        </div>
+                        <h4>Capacitação Completa</h4>
+                        <p>Treinamento estruturado em 9 módulos progressivos, do básico ao avançado, cobrindo todos os aspectos do CRM.</p>
+                        <span class="card-link">Ver módulos →</span>
+                    </div>
+                    
+                    <div class="feature-card clickable-card" onclick="navigateTo('governanca')">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        </div>
+                        <h4>Governança Estabelecida</h4>
+                        <p>Papéis, responsabilidades e rituais claramente definidos para garantir qualidade e consistência.</p>
+                        <span class="card-link">Ver governança →</span>
+                    </div>
+                    
+                    <div class="feature-card clickable-card" onclick="navigateTo('pos-treinamento')">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        </div>
+                        <h4>Adoção Sustentável</h4>
+                        <p>Acompanhamento contínuo e suporte dedicado para garantir uso efetivo do sistema.</p>
+                        <span class="card-link">Ver pós-treinamento →</span>
+                    </div>
+                    
+                    <div class="feature-card clickable-card" onclick="navigateTo('resultados')">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                        </div>
+                        <h4>Maturidade Progressiva</h4>
+                        <p>Evolução planejada em 5 estágios, da adoção inicial até a excelência operacional.</p>
+                        <span class="card-link">Ver resultados →</span>
+                    </div>
+                    
+                    <div class="feature-card clickable-card" onclick="navigateTo('pos-treinamento')">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <h4>Melhoria Contínua</h4>
+                        <p>Processos de feedback e otimização constante para evolução do CRM junto com o negócio.</p>
+                        <span class="card-link">Ver pós-treinamento →</span>
+                    </div>
+                    
+                    <div class="feature-card clickable-card" onclick="navigateTo('pos-treinamento')">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        </div>
+                        <h4>Métricas e KPIs</h4>
+                        <p>Dashboards e indicadores para acompanhar adoção, qualidade e evolução do CRM.</p>
+                        <span class="card-link">Ver pós-treinamento →</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÚBLICO-ALVO -->
+        <div id="publico" class="page">
+            <div class="page-content">
+                <h1>Público-Alvo do Programa</h1>
+                <p class="page-subtitle">O programa atenderá diferentes perfis de usuários do CRM, cada um com necessidades e objetivos específicos.</p>
+                
+                <h2>Times Comerciais</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                        </div>
+                        <h4>Equipe On Trade</h4>
+                        <p><strong>Perfil:</strong> Representantes que atendem bares, restaurantes e estabelecimentos</p>
+                        <p><strong>Foco do Treinamento:</strong></p>
+                        <ul>
+                            <li>Gestão de relacionamento com contas On Trade</li>
+                            <li>Registro de visitas e degustações</li>
+                            <li>Gestão de pipeline específico</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M18.36 9l.6 3H5.04l.6-3h12.72M20 4H4v2h16V4zm0 3H4l-1 5v2h1v6h10v-6h4v6h2v-6h1v-2l-1-5zM6 18v-4h6v4H6z"/></svg>
+                        </div>
+                        <h4>Equipe Off Trade</h4>
+                        <p><strong>Perfil:</strong> Representantes que atendem distribuidores e varejos</p>
+                        <p><strong>Foco do Treinamento:</strong></p>
+                        <ul>
+                            <li>Gestão de contas Off Trade</li>
+                            <li>Negociações e contratos</li>
+                        </ul>
+                    </div>
+
+                    <!-- ALTERADO: Novo perfil - Consultores -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <h4>Equipe Loja</h4>
+                        <p><strong>Perfil:</strong> Equipe de loja que atende clientes finais e contas estratégicas</p>
+                        <p><strong>Foco do Treinamento:</strong></p>
+                        <ul>
+                            <li>Gestão de carteira de clientes</li>
+                            <li>Registro de interações e follow-ups</li>
+                            <li>Negociações e propostas comerciais</li>
+                            <li>Acompanhamento de metas individuais</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2>Gestão e Liderança</h2>
+                <div class="card-grid">
+                    <!-- ALTERADO: Novo perfil - Gerentes -->
+                    <div class="card">
+                        <h4>Gerentes</h4>
+                        <p><strong>Perfil:</strong> Gerentes de área com visão estratégica e acompanhamento de equipe</p>
+                        <p><strong>Foco do Treinamento:</strong></p>
+                        <ul>
+                            <li>Visão consolidada de performance das equipes</li>
+                            <li>Relatórios executivos e indicadores</li>
+                            <li>Acompanhamento de metas por equipe</li>
+                            <li>Governança e rituais de acompanhamento</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- ALTERADO: Marketing separado do restante com trilha própria -->
+                <h2>Marketing — Trilha Própria</h2>
+                <div class="highlight">
+                    <p>A equipe de Marketing possui uma <strong>trilha própria e independente</strong> dentro do programa, com módulos específicos, cronograma dedicado e métricas de adesão separadas.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <!-- ALTERADO: Marketing como perfil de usuário -->
+                        <h4>Equipe de Marketing</h4>
+                        <p><strong>Perfil:</strong> Profissionais de marketing responsáveis por campanhas e geração de demanda</p>
+                        <p><strong>Foco do Treinamento (Trilha Marketing):</strong></p>
+                        <ul>
+                            <li>Criação de campanhas</li>
+                            <li>Segmentação de base</li>
+                            <li>Lead scoring</li>
+                            <li>Análise de performance</li>
+                            <li>Automações e workflows de nutrição</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Áreas de Suporte</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <h4>Administradores CRM</h4>
+                        <ul>
+                            <li>Configurações avançadas</li>
+                            <li>Gestão de permissões</li>
+                            <li>Automações e workflows</li>
+                            <li>Auditoria de dados</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <h3>Total de Colaboradores</h3>
+                    <p>Aproximadamente <strong>40-50 colaboradores</strong> distribuídos entre os diferentes perfis.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div id="resultados" class="page">
+            <div class="page-content">
+                <h1>Resultados Esperados</h1>
+                <p class="page-subtitle">Métricas mensuráveis ao final do programa</p>
+                
+                <h2>Dashboard de Métricas Projetadas</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <div class="metric-label">Onboarding</div>
+                            <div class="metric-icon">
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            </div>
+                        </div>
+                        <div class="metric-number">-25%</div>
+                        <div class="metric-description">Redução no tempo de onboarding</div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <div class="metric-label">Qualidade</div>
+                            <div class="metric-icon">
+                                <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                            </div>
+                        </div>
+                        <div class="metric-number">50%+</div>
+                        <div class="metric-description">Dados completos e consistentes</div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <div class="metric-label">Negociações</div>
+                            <div class="metric-icon">
+                                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                            </div>
+                        </div>
+                        <div class="metric-number">1.2x</div>
+                        <div class="metric-description">Melhor organização e registro</div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <div class="metric-label">Conversão</div>
+                            <div class="metric-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            </div>
+                        </div>
+                        <div class="metric-number">+5%</div>
+                        <div class="metric-description">Follow-up estruturado</div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <div class="metric-label">Taxa de Adesão ao Treinamento</div>
+                            <div class="metric-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            </div>
+                        </div>
+                        <div class="metric-number">50%+</div>
+                        <div class="metric-description">Participação efetiva nos módulos</div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <div class="metric-label">Uso da RD (1 mês pós)</div>
+                            <div class="metric-icon">
+                                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                            </div>
+                        </div>
+                        <div class="metric-number">50%</div>
+                        <div class="metric-description">Meta inicial pós-treinamento</div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- ALTERADO: Evolução por Fase → Adesão por Módulos -->
+                <h2>Evolução de Adesão por Trilha</h2>
+                <div class="chart-container">
+                    <div class="bar-chart">
+                        <div style="font-size:0.85em; font-weight:700; color:#6b1428; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid #6b1428;">Trilha Comercial</div>
+                        <div class="bar-item">
+                            <div class="bar-label">Adoção Inicial (M1-2)</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: 30%">30%</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Padronização (M3)</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: 35%">35%</div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:0.85em; font-weight:700; color:#6b1428; text-transform:uppercase; letter-spacing:1px; margin:18px 0 8px 0; padding-bottom:6px; border-bottom:2px solid #6b1428;">Trilha Gestão / Liderança</div>
+                        <div class="bar-item">
+                            <div class="bar-label">Otimização (M1-2)</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: 40%">40%</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Inteligência (M3)</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: 45%">45%</div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:0.85em; font-weight:700; color:#6b1428; text-transform:uppercase; letter-spacing:1px; margin:18px 0 8px 0; padding-bottom:6px; border-bottom:2px solid #6b1428;">Trilha Marketing</div>
+                        <div class="bar-item">
+                            <div class="bar-label">Excelência (M1-4)</div>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: 50%">50%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GOVERNANÇA -->
+        <div id="governanca" class="page">
+            <div class="page-content">
+                <h1>Estrutura de Governança</h1>
+                <p class="page-subtitle">Sugestões de estrutura, responsabilidades e rituais para apoiar a adoção do CRM</p>
+                
+                <!-- ALTERADO: Regra oficial de uso obrigatório do CRM -->
+                <div class="highlight">
+                    <h3><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 3c-1.27 0-2.4.8-2.82 2H3v2h1.95L2 14c-.47 2 1 3 3.5 3s4.06-1 3.5-3L6.05 7h3.12c.33.85 1.01 1.5 1.83 1.82V20H7v2h10v-2h-4V8.82c.82-.32 1.5-.97 1.83-1.82h3.12L15 14c-.47 2 1 3 3.5 3s4.06-1 3.5-3L19.05 7H21V5h-6.18C14.4 3.8 13.27 3 12 3z"/></svg> Diretriz: Uso do CRM como Ferramenta Estratégica</h3>
+                    <ul>
+                        <li>O CRM (RD Station) é a <strong>ferramenta central de gestão comercial</strong> da Zahil Vinhos</li>
+                        <li>O registro das interações com clientes e prospects é essencial para a tomada de decisão</li>
+                        <li>O acompanhamento de uso será feito de forma colaborativa nas reuniões de equipe</li>
+                        <li>O objetivo é que todos percebam o CRM como aliado do seu dia a dia, não como obrigação</li>
+                    </ul>
+                </div>
+
+                <!-- ALTERADO: Meta 1 mês pós-treinamento 90% uso da RD -->
+                <div class="highlight">
+                    <h3><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10 10-4.49 10-10S17.51 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3-8c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/></svg> Meta Sugerida Pós-Treinamento: 50% de Uso da RD</h3>
+                    <ul>
+                        <li>Após <strong>1 mês da conclusão do treinamento</strong>, acompanhar a evolução de uso da RD Station</li>
+                        <li>Meta inicial de <strong>50% de uso efetivo</strong>, com revisão progressiva</li>
+                        <li>Critérios sugeridos: login frequente, registros de atividades, atualização de pipeline</li>
+                        <li>A meta pode ser ajustada conforme a realidade de cada equipe</li>
+                    </ul>
+                </div>
+
+                <!-- ALTERADO: Projeção futura ideal -->
+                <div class="highlight">
+                    <h3><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M14 4v5c0 1.12.37 2.16 1 3H9c.65-.86 1-1.9 1-3V4h4m3-2H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3V4h1c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg> Sobre as Atribuições e Responsabilidades</h3>
+                    <ul>
+                        <li>Os papéis abaixo representam uma <strong>sugestão de estrutura</strong> para a governança do CRM</li>
+                        <li>A implementação será gradual, respeitando o ritmo e a realidade de cada equipe</li>
+                        <li>Os ajustes serão feitos em conjunto com a diretoria conforme a maturidade da operação</li>
+                    </ul>
+                </div>
+
+                <h2>Papéis e Responsabilidades</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Papel</th>
+                                <th>Responsabilidades</th>
+                                <th>Frequência</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>CRM Owner</strong></td>
+                                <td>Define estratégia e prioridades | Aprova mudanças estruturais</td>
+                                <td>Mensal</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Administrator</strong></td>
+                                <td>Gerencia configurações | Garante qualidade de dados</td>
+                                <td>Diária</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Stewards</strong></td>
+                                <td>Validam dados em suas áreas | Identificam anomalias</td>
+                                <td>Semanal</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Power Users</strong></td>
+                                <td>Suportam colegas | Testam funcionalidades</td>
+                                <td>Diária</td>
+                            </tr>
+                            <tr>
+                                <td><strong>End Users</strong></td>
+                                <td>Utilizam CRM diariamente | Seguem processos</td>
+                                <td>Diária</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h2>Rituais de Acompanhamento</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <h4>Daily CRM Check (5min)</h4>
+                        <p><strong>Responsável:</strong> Gerente comercial com seu respectivo time</p>
+                        <ul>
+                            <li>Revisar tarefas e follow-ups</li>
+                            <li>Atualizar oportunidades</li>
+                            <li>Registrar interações</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Weekly Data Quality (30min)</h4>
+                        <p><strong>Responsável:</strong> Time de CRM com o gerente comercial</p>
+                        <ul>
+                            <li>Revisar cadastros da semana</li>
+                            <li>Corrigir duplicidades</li>
+                            <li>Validar campos obrigatórios</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Monthly Performance (1h)</h4>
+                        <p><strong>Responsável:</strong> Time de CRM com o gerente comercial</p>
+                        <ul>
+                            <li>Análise de métricas de adoção</li>
+                            <li>Revisão de KPIs comerciais</li>
+                            <li>Identificação de gargalos</li>
+                            <!-- ALTERADO: Definições por equipe -->
+                            <li>Definições por equipe</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Quarterly Strategy (2h)</h4>
+                        <p><strong>Responsável:</strong> Gerente comercial com a diretoria comercial</p>
+                        <ul>
+                            <li>Revisão de objetivos</li>
+                            <li>Avaliação de funcionalidades</li>
+                            <li>Roadmap de melhorias</li>
+                            <!-- ALTERADO: Definições por equipe -->
+                            <li>Análise de adesão por equipe</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÓDULOS -->
+        <div id="modulos" class="page">
+            <div class="page-content">
+                <h1>Módulos de Treinamento</h1>
+                <!-- ALTERADO: Subtítulo atualizado para refletir trilhas -->
+                <p class="page-subtitle">Módulos organizados por trilhas, com testes de avaliação ao final de cada fase</p>
+                
+                <!-- SUB-ABAS DE NAVEGAÇÃO -->
+                <div style="display:flex; gap:10px; margin-bottom:30px; flex-wrap:wrap;">
+                    <button class="module-tab active" onclick="switchModuleTab('trilha-comercial', this)">
+                        <svg style="width:1em;height:1em;vertical-align:-0.15em;fill:currentColor;margin-right:5px;" viewBox="0 0 24 24"><path d="M6 3v6c0 2.97 2.16 5.43 5 5.91V19H8v2h8v-2h-3v-4.09c2.84-.48 5-2.94 5-5.91V3H6zm10 6c0 2.21-1.79 4-4 4s-4-1.79-4-4V5h8v4z"/></svg>
+                        Comercial
+                    </button>
+                    <button class="module-tab" onclick="switchModuleTab('trilha-gestao', this)">
+                        <svg style="width:1em;height:1em;vertical-align:-0.15em;fill:currentColor;margin-right:5px;" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                        Gestão
+                    </button>
+                    <button class="module-tab" onclick="switchModuleTab('trilha-marketing', this)">
+                        <svg style="width:1em;height:1em;vertical-align:-0.15em;fill:currentColor;margin-right:5px;" viewBox="0 0 24 24"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1l5 3V6L5 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg>
+                        Marketing
+                    </button>
+                </div>
+
+                <!-- TRILHA COMERCIAL -->
+                <div id="trilha-comercial" class="module-panel active">
+                <h2><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M6 3v6c0 2.97 2.16 5.43 5 5.91V19H8v2h8v-2h-3v-4.09c2.84-.48 5-2.94 5-5.91V3H6zm10 6c0 2.21-1.79 4-4 4s-4-1.79-4-4V5h8v4z"/></svg> Trilha Comercial — Equipe Loja · On Trade · Off Trade</h2>
+                <p>Tempo de aula por equipe: sessões de 1h | Frequência: 1x por semana</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 1: Onboarding em CRM (2h)</div>
+                            <p><strong>Objetivo:</strong> Apresentar o CRM e sua importância</p>
+                            <ul>
+                                <li>O que é CRM e por que usamos</li>
+                                <li>Tour pela plataforma</li>
+                                <li>Primeiro login e configuração</li>
+                                <!-- ALTERADO: Negociações e Objetivos adicionados -->
+                                <li><strong>Negociações:</strong> Visão geral do ciclo de negociação no CRM</li>
+                                <li><strong>Objetivos:</strong> Metas individuais e da equipe no sistema</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 2: Fundamentos (3h)</div>
+                            <ul>
+                                <li>Conceitos: leads, contatos, contas</li>
+                                <li>Estrutura de dados</li>
+                                <li>Qualidade de dados</li>
+                                <li>LGPD e privacidade</li>
+                                <!-- ALTERADO: Fluxos e Permissões adicionados -->
+                                <li>Fluxos de trabalho e etapas do funil</li>
+                                <li>Permissões: Níveis de acesso e responsabilidades por perfil</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 3: Operação Diária (4h)</div>
+                            <ul>
+                                <li>Criação e gestão de contatos</li>
+                                <li>Registro de atividades</li>
+                                <li>Gestão de tarefas</li>
+                                <li>Filtros e buscas</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                </div>
+
+                <!-- TRILHA GESTÃO COMERCIAL -->
+                <div id="trilha-gestao" class="module-panel">
+                <h2><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg> Trilha Gestão Comercial — Gestores · Gerentes</h2>
+                <p>Tempo de aula: sessões de 1h | Frequência: 1x por semana</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 1: Fundamentos e Operação do CRM (3h)</div>
+                            <p><strong>Objetivo:</strong> Visão consolidada dos fundamentos e operação diária do CRM</p>
+                            <ul>
+                                <li>O que é CRM e por que usamos</li>
+                                <li>Tour pela plataforma e primeiro acesso</li>
+                                <li>Conceitos: leads, contatos, contas e estrutura de dados</li>
+                                <li>Fluxos de trabalho e etapas do funil</li>
+                                <li>Criação e gestão de contatos</li>
+                                <li>Registro de atividades e gestão de tarefas</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 2: CRM para Vendas e Análise de Dados (4h)</div>
+                            <ul>
+                                <li>Gestão de pipeline e negociações</li>
+                                <li>Qualificação de leads e criação de oportunidades</li>
+                                <li>Principais KPIs comerciais</li>
+                                <li>Construção de relatórios e dashboards</li>
+                                <li>Forecasting e projeções</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 3: Governança (2h)</div>
+                            <ul>
+                                <li>Políticas de uso aceitável</li>
+                                <li>Responsabilidades por perfil</li>
+                                <li>Processos de auditoria</li>
+                                <li>Rituais de governança</li>
+                                <li>Boas práticas e diretrizes de uso do CRM</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+                <!-- TRILHA MARKETING -->
+                <div id="trilha-marketing" class="module-panel">
+                <h2><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1l5 3V6L5 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg> Trilha Marketing — Equipe de Marketing</h2>
+                <p>Programa independente | Tempo de aula: sessões de 1h | Frequência: 1x por semana</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 1 (Mkt): Onboarding em CRM (2h)</div>
+                            <ul>
+                                <li>O que é CRM e por que usamos</li>
+                                <li>Tour pela plataforma RD Station</li>
+                                <li>Primeiro login e configuração</li>
+                                <li>Visão de como Marketing alimenta o pipeline</li>
+                                <li>Objetivos de Marketing no CRM</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 2 (Mkt): Fundamentos (3h)</div>
+                            <ul>
+                                <li>Conceitos: leads, contatos, contas</li>
+                                <li>Estrutura de dados para Marketing</li>
+                                <li>LGPD e privacidade</li>
+                                <li>Fluxos de automação</li>
+                                <li>Permissões de Marketing no CRM</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 3 (Mkt): CRM para Marketing (3h)</div>
+                            <ul>
+                                <li>Segmentação e listas</li>
+                                <li>Criação de campanhas</li>
+                                <li>Lead scoring</li>
+                                <li>Análise de performance</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-4h2v2h-2zm1.61-9.96c-2.06-.3-3.88.97-4.43 2.79-.18.58.26 1.17.87 1.17h.2c.41 0 .74-.29.88-.67.32-.89 1.27-1.5 2.3-1.28.95.2 1.65 1.13 1.57 2.1-.1 1.34-1.62 1.63-2.45 2.88 0 .01-.01.01-.01.02-.01.02-.02.03-.03.05-.09.15-.18.32-.25.5-.01.03-.03.05-.04.08-.01.02-.01.04-.02.07-.12.34-.2.75-.2 1.25h2c0-.42.11-.77.28-1.07.02-.03.03-.06.05-.09.08-.14.18-.27.28-.39.01-.01.02-.03.03-.04.1-.12.21-.23.33-.34.96-.91 2.26-1.65 1.99-3.56-.24-1.74-1.61-3.21-3.35-3.47z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Módulo 4 (Mkt): Automações (3h)</div>
+                            <ul>
+                                <li>Criação de automações de marketing</li>
+                                <li>Workflows de nutrição</li>
+                                <li>Notificações e alertas</li>
+                                <li>Sequências de e-mail</li>
+                            </ul>
+                            <p><em><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Aplicação de teste para metrificar evolução</em></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                </div>
+
+                <!-- Carga horária total geral -->
+                <div class="highlight">
+                    <h3><svg style="width:1.1em;height:1.1em;vertical-align:-0.15em;fill:#6b1428;display:inline-block;margin-right:4px;" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg> Carga Horária Total do Programa: 18h</h3>
+                    <p>Trilha Comercial (9h) + Trilha Gestão Comercial (9h)</p>
+                    <p><strong>Métricas de acompanhamento:</strong> Taxa de adesão ao treinamento | Adesão por módulos | 50% de uso da RD após 1 mês | Negociações registradas (meta 1.2x)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- METODOLOGIA -->
+        <div id="metodologia" class="page">
+            <div class="page-content">
+                <h1>Metodologia de Treinamento</h1>
+                <p class="page-subtitle">Formatos de aprendizado para absorção, retenção e aplicação prática</p>
+                
+                <h2>Formatos de Aprendizado</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <h4>Workshops Práticos</h4>
+                        <ul>
+                            <li>Sessões interativas ao vivo</li>
+                            <li>Demonstrações em ambiente real</li>
+                            <li>Exercícios hands-on</li>
+                            <li>Grupos pequenos (máx 15)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Materiais de Apoio</h4>
+                        <ul>
+                            <li>Guias em PDF ilustrados</li>
+                            <li>Vídeos tutoriais gravados</li>
+                            <li>Checklists de boas práticas</li>
+                            <li>Base de conhecimento online</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Ambiente Sandbox</h4>
+                        <ul>
+                            <li>Prática sem risco</li>
+                            <li>Cenários baseados na Zahil</li>
+                            <li>Simulações de casos de uso</li>
+                            <li>Feedback imediato</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <!-- ALTERADO: Coaching Individual → Micro-treinamentos -->
+                        <h4>Micro-treinamentos</h4>
+                        <ul>
+                            <li>Sessões curtas e focadas</li>
+                            <li>Acompanhamento inicial</li>
+                            <li>Planos de desenvolvimento</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2>Cronograma de Implementação</h2>
+
+                <h3>Trilha Comercial (Equipe Loja · On Trade · Off Trade)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fase</th>
+                                <th>Semanas</th>
+                                <th>Atividades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Preparação</strong></td>
+                                <td>1-2</td>
+                                <td>Definição de grupos por equipe | Materiais | Setup sandbox</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Módulos Base</strong></td>
+                                <td>3-6</td>
+                                <td>Módulos 1, 2 e 3 | Prática intensiva | Testes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Acompanhamento</strong></td>
+                                <td>Contínuo</td>
+                                <td>Office hours | Micro-treinamentos | Suporte | Avaliação 50% RD</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Trilha Gestão Comercial (Gestores · Gerentes)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fase</th>
+                                <th>Semanas</th>
+                                <th>Atividades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Fundamentos</strong></td>
+                                <td>1-3</td>
+                                <td>Módulo 1 (Fundamentos e Operação do CRM) | Testes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gestão e Análise</strong></td>
+                                <td>4-7</td>
+                                <td>Módulo 2 (CRM para Vendas e Análise de Dados) + Dashboards gerenciais | Testes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Governança + Pós</strong></td>
+                                <td>8-9</td>
+                                <td>Módulo 3 (Governança) + Ações Pós-Treinamento</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Acompanhamento</strong></td>
+                                <td>Contínuo</td>
+                                <td>Rituais de acompanhamento | Micro-treinamentos | Avaliação 50% RD</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Trilha Marketing (Equipe de Marketing)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fase</th>
+                                <th>Semanas</th>
+                                <th>Atividades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Preparação</strong></td>
+                                <td>1-2</td>
+                                <td>Definição de escopo Marketing | Materiais | Setup sandbox</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Módulos Base</strong></td>
+                                <td>3-5</td>
+                                <td>Módulos 1 e 2 (Onboarding + Fundamentos Marketing) | Testes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Especialização</strong></td>
+                                <td>6-8</td>
+                                <td>Módulo 3 (CRM para Marketing) + Módulo 4 (Automações) | Testes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pós-Treinamento</strong></td>
+                                <td>9-10</td>
+                                <td>Ações Pós-Treinamento | Avaliação final</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Acompanhamento</strong></td>
+                                <td>Contínuo</td>
+                                <td>Office hours | Micro-treinamentos | Suporte | Avaliação 50% RD</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRÓXIMOS PASSOS -->
+        <div id="proximos" class="page">
+            <div class="page-content">
+                <h1>Próximos Passos</h1>
+                <p class="page-subtitle">Plano de ação para implementação</p>
+                
+                <h2>Fase 1: Planejamento</h2>
+                <div class="card">
+                    <h4>Atividades Preparatórias (Semanas 1-2)</h4>
+                    <ol>
+                        <li>Aprovação do Programa com liderança comercial</li>
+                        <li>Definição de Grupos por perfil e área</li>
+                        <li>Calendário de Treinamentos considerando disponibilidade</li>
+                        <li>Preparação de Materiais customizados</li>
+                        <li>Setup Ambiente Sandbox para práticas</li>
+                        <li>Comunicação Interna sobre o programa</li>
+                    </ol>
+                </div>
+                
+                <h2>Fase 2: Execução</h2>
+                <div class="card">
+                    <ul>
+                        <li><strong>Semanas 3-6:</strong> Módulos Base</li>
+                        <li><strong>Semanas 7-10:</strong> Especialização</li>
+                        <li><strong>Semanas 11-12:</strong> Governança</li>
+                        <li><strong>Contínuo:</strong> Suporte</li>
+                    </ul>
+                </div>
+                
+                <h2>Recursos Necessários</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <h4>Equipe</h4>
+                        <ul>
+                            <li>CRM Manager</li>
+                            <li>Disponibilidade das equipes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Tecnologia</h4>
+                        <ul>
+                            <li>Ambiente CRM produção</li>
+                            <li>Ambiente Sandbox</li>
+                            <li>Plataforma para materiais</li>
+                            <li>Ferramenta de tickets</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Infraestrutura</h4>
+                        <ul>
+                            <li>Sala de treinamento equipada</li>
+                            <li>Computadores para práticas</li>
+                            <li>Conexão estável de internet</li>
+                            <li>Sistema de videoconferência</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4>Materiais</h4>
+                        <ul>
+                            <li>Guias impressos e digitais</li>
+                            <li>Vídeos tutoriais</li>
+                            <li>Checklists e templates</li>
+                            <li>Base de conhecimento</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <h3>Validação e Aprovação</h3>
+                    <p><strong>Próximas ações necessárias:</strong></p>
+                    <ul>
+                        <li>Apresentação do programa para Diretoria Comercial</li>
+                        <li>Aprovação de orçamento e recursos</li>
+                        <li>Definição de datas de início</li>
+                        <li>Nomeação de responsáveis por área</li>
+                        <li>Comunicação oficial para todas as equipes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÓS-TREINAMENTO -->
+        <div id="pos-treinamento" class="page">
+            <div class="page-content">
+                <h1>Ações Pós-Treinamento</h1>
+                <p class="page-subtitle">Plano de acompanhamento e consolidação após o programa</p>
+                
+                <h2>Acompanhamento Individual (30 dias)</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <h4>Plano de Acompanhamento</h4>
+                        <ul>
+                            <li>Acompanhamento individual por 30 dias</li>
+                            <li>Checkpoints semanais com gestor</li>
+                            <li>Revisão de atividades registradas na RD</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Meta de Uso da RD</h4>
+                        <ul>
+                            <li>Meta inicial sugerida: 50% de uso da RD após 1 mês</li>
+                            <li>Monitoramento por equipe e individual</li>
+                            <li>Relatório de adesão compartilhado com gestores</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Micro-treinamentos de Reforço</h2>
+                <div class="card">
+                    <ul>
+                        <li>Sessões curtas e focadas em dúvidas recorrentes</li>
+                        <li>Reforço de funcionalidades menos utilizadas</li>
+                        <li>Cadência mensal nos primeiros 3 meses</li>
+                    </ul>
+                </div>
+
+                <h2>Melhoria Contínua</h2>
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <h4>Processos</h4>
+                        <ul>
+                            <li>Identificação de gargalos</li>
+                            <li>Metodologia PDCA</li>
+                            <li>Testes A/B de processos</li>
+                            <li>Roadmap evolutivo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight">
+                    <h3>Avaliação Final</h3>
+                    <p>Ao término dos 30 dias de acompanhamento, será realizada uma <strong>avaliação final do programa</strong> com pesquisa de satisfação, análise de adesão por equipe e definição de próximos ciclos de micro-treinamentos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="font-size: 1.1em; margin-bottom: 10px;"><strong style="color: #d4677a;">Programa de Treinamento e Governança em CRM</strong></p>
+        <p>Zahil Vinhos | CRM Team - Breno Souto | 2026</p>
+        <p style="margin-top: 15px; font-size: 0.9em; color: #999;">Benchmark realizado com Evino e Mistral para a montagem desta apresentação</p>
+    </footer>
+
+    <script>
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(pageId)) {
+                    link.classList.add('active');
+                }
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchModuleTab(panelId, btn) {
+            document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.module-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(panelId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.metric-progress-bar, .bar-fill').forEach(bar => {
+                    bar.style.transition = 'width 1.5s ease';
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
